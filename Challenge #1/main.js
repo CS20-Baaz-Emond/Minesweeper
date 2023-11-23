@@ -259,7 +259,7 @@ function blockValue(c, y, maxWidth, maxHeight) {
   }
 }
 
-document.addEventListener("mousedown", mouseDown);
+document.addEventListener("click", mouseDown);
 
 function mouseDown(e, maxX, maxY) {
 
@@ -288,8 +288,6 @@ maxX = 24
 
 function mouseInSquare(c, y, maxWidth, maxHeight, mouseX, mouseY) {
   if (mouseX > ((800 / maxWidth) * y) && mouseY > ((800 / maxHeight) * c) && mouseX < ((800 / maxWidth) * y) + (800 / maxWidth) && mouseY < ((800 / maxHeight) * c) + (800 / maxHeight)) {
-    console.log(y, c)
+    console.log(y, c, blocks[c][y])
   }
 }
-
-// ((800 / maxWidth) * x), ((800 / maxHeight) * y), (800 / maxWidth), (800 / maxHeight)
