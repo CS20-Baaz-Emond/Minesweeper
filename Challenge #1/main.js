@@ -20,22 +20,7 @@ function easyClicked() {
   medium = false
   hard = false
 
-  for (let x = 0; x < 10; x++) {
-  bombX = Math.round(Math.random() * 7)
-  bombY = Math.round(Math.random() * 9)
-  bombs.push([bombX, bombY])
-  for (let b = 0; b < bombs.length; b++) {
-  if (bombs[x][0] == bombs[b][0] && bombs[x][1] == bombs[b][1]) {
-    if (x !== b) {
-      bombs.splice(x, 1)
-      bombX = Math.round(Math.random() * 7)
-      bombY = Math.round(Math.random() * 9)
-      bombs.splice(x, 0, [bombX, bombY])
-      x - 1
-    }
-  }
-  }
-  }
+  determineBombs(10, 7, 9)
 
   for (let c = 0; c < 8; c++) {
   blocks.push([])
@@ -75,22 +60,7 @@ function mediumClicked() {
   medium = true
   hard = false
 
-  for (let x = 0; x < 40; x++) {
-    bombX = Math.round(Math.random() * 13)
-    bombY = Math.round(Math.random() * 17)
-    bombs.push([bombX, bombY])
-    for (let b = 0; b < bombs.length; b++) {
-    if (bombs[x][0] == bombs[b][0] && bombs[x][1] == bombs[b][1]) {
-      if (x !== b) {
-        bombs.splice(x, 1)
-        bombX = Math.round(Math.random() * 13)
-        bombY = Math.round(Math.random() * 17)
-        bombs.splice(x, 0, [bombX, bombY])
-        x - 1
-      }
-    }
-    }
-    }
+  determineBombs(40, 13, 17)
 
   for (let c = 0; c < 14; c++) {
   blocks.push([])
@@ -130,22 +100,7 @@ function hardClicked() {
   medium = false
   hard = true
 
-  for (let x = 0; x < 99; x++) {
-    bombX = Math.round(Math.random() * 19)
-    bombY = Math.round(Math.random() * 23)
-    bombs.push([bombX, bombY])
-    for (let b = 0; b < bombs.length; b++) {
-    if (bombs[x][0] == bombs[b][0] && bombs[x][1] == bombs[b][1]) {
-      if (x !== b) {
-        bombs.splice(x, 1)
-        bombX = Math.round(Math.random() * 13)
-        bombY = Math.round(Math.random() * 17)
-        bombs.splice(x, 0, [bombX, bombY])
-        x - 1
-      }
-    }
-    }
-    }
+  determineBombs(99, 19,23)
 
   for (let c = 0; c < 20; c++) {
   blocks.push([])
@@ -181,55 +136,29 @@ ctx.fillRect(0, 0, cnv.width, cnv.height)
 function drawStuff(y, x, maxWidth, maxHeight) {
   if (blocks[y][x] == -1) {
     ctx.fillStyle = "black"
-    ctx.fillRect(((800 / maxWidth) * x), ((800 / maxHeight) * y), (800 / maxWidth), (800 / maxHeight))
-    ctx.strokeStyle = "white"
-    ctx.strokeRect(((800 / maxWidth) * x), ((800 / maxHeight) * y), (800 / maxWidth), (800 / maxHeight))
   } else if (blocks[y][x] == 0){
     ctx.fillStyle = "#9F8C76"
-    ctx.fillRect(((800 / maxWidth) * x), ((800 / maxHeight) * y), (800 / maxWidth), (800 / maxHeight))
-    ctx.strokeStyle = "white"
-    ctx.strokeRect(((800 / maxWidth) * x), ((800 / maxHeight) * y), (800 / maxWidth), (800 / maxHeight))
   } else if (blocks[y][x] == 1){
     ctx.fillStyle = "blue"
-    ctx.fillRect(((800 / maxWidth) * x), ((800 / maxHeight) * y), (800 / maxWidth), (800 / maxHeight))
-    ctx.strokeStyle = "white"
-    ctx.strokeRect(((800 / maxWidth) * x), ((800 / maxHeight) * y), (800 / maxWidth), (800 / maxHeight))
   } else if (blocks[y][x] == 2){
     ctx.fillStyle = "lime"
-    ctx.fillRect(((800 / maxWidth) * x), ((800 / maxHeight) * y), (800 / maxWidth), (800 / maxHeight))
-    ctx.strokeStyle = "white"
-    ctx.strokeRect(((800 / maxWidth) * x), ((800 / maxHeight) * y), (800 / maxWidth), (800 / maxHeight))
   }  else if (blocks[y][x] == 3){
     ctx.fillStyle = "red"
-    ctx.fillRect(((800 / maxWidth) * x), ((800 / maxHeight) * y), (800 / maxWidth), (800 / maxHeight))
-    ctx.strokeStyle = "white"
-    ctx.strokeRect(((800 / maxWidth) * x), ((800 / maxHeight) * y), (800 / maxWidth), (800 / maxHeight))
   } else if (blocks[y][x] == 4){
     ctx.fillStyle = "purple"
-    ctx.fillRect(((800 / maxWidth) * x), ((800 / maxHeight) * y), (800 / maxWidth), (800 / maxHeight))
-    ctx.strokeStyle = "white"
-    ctx.strokeRect(((800 / maxWidth) * x), ((800 / maxHeight) * y), (800 / maxWidth), (800 / maxHeight))
   } else if (blocks[y][x] == 5){
     ctx.fillStyle = "yellow"
-    ctx.fillRect(((800 / maxWidth) * x), ((800 / maxHeight) * y), (800 / maxWidth), (800 / maxHeight))
-    ctx.strokeStyle = "white"
-    ctx.strokeRect(((800 / maxWidth) * x), ((800 / maxHeight) * y), (800 / maxWidth), (800 / maxHeight))
   } else if (blocks[y][x] == 6){
     ctx.fillStyle = "cyan"
-    ctx.fillRect(((800 / maxWidth) * x), ((800 / maxHeight) * y), (800 / maxWidth), (800 / maxHeight))
-    ctx.strokeStyle = "white"
-    ctx.strokeRect(((800 / maxWidth) * x), ((800 / maxHeight) * y), (800 / maxWidth), (800 / maxHeight))
   } else if (blocks[y][x] == 7){
     ctx.fillStyle = "pink"
-    ctx.fillRect(((800 / maxWidth) * x), ((800 / maxHeight) * y), (800 / maxWidth), (800 / maxHeight))
-    ctx.strokeStyle = "white"
-    ctx.strokeRect(((800 / maxWidth) * x), ((800 / maxHeight) * y), (800 / maxWidth), (800 / maxHeight))
   } else if (blocks[y][x] == 8){
     ctx.fillStyle = "white"
-    ctx.fillRect(((800 / maxWidth) * x), ((800 / maxHeight) * y), (800 / maxWidth), (800 / maxHeight))
-    ctx.strokeStyle = "white"
-    ctx.strokeRect(((800 / maxWidth) * x), ((800 / maxHeight) * y), (800 / maxWidth), (800 / maxHeight))
   } 
+  ctx.fillRect(((800 / maxWidth) * x), ((800 / maxHeight) * y), (800 / maxWidth), (800 / maxHeight))
+
+  ctx.strokeStyle = "white"
+  ctx.strokeRect(((800 / maxWidth) * x), ((800 / maxHeight) * y), (800 / maxWidth), (800 / maxHeight))
 }
 
 function blockValue(c, y, maxWidth, maxHeight) {
@@ -257,6 +186,37 @@ function blockValue(c, y, maxWidth, maxHeight) {
   if (c < maxHeight && y < maxWidth && blocks[c + 1][y + 1] > -1) {
     blocks[c + 1][y + 1] += 1
   }
+}
+
+function determineBombs(maxBombs, maxBombX, maxBombY) {
+  let reload = false
+  console.log(maxBombs, maxBombX, maxBombY)
+  for (let x = 0; x < maxBombs; x++) {
+    bombX = Math.round(Math.random() * maxBombX)
+    bombY = Math.round(Math.random() * maxBombY)
+    bombs.splice(x, 0, [bombX, bombY])
+    for (let b = 0; b < bombs.length; b++) {
+      if (bombs[x][0] == bombs[b][0] && bombs[x][1] == bombs[b][1] && (easy || medium)) {
+        if (x !== b) {
+          reload = true
+        }
+      } else if (bombs[x][0] == bombs[b][0] && bombs[x][1] == bombs[b][1] && (hard)) {
+        if (x !== b) {
+          bombs[x] = []
+          bombX = Math.round(Math.random * maxBombX)
+          bombY = Math.round(Math.random * maxBombY)
+          bombs[x] = [bombX, bombY]
+          if (bombs[x][0] == bombs[b][0] && bombs[x][1] == bombs[b][1] && (hard)) {
+            reload = true
+          }
+        }
+      }
+  }
+}
+if (reload) {
+  bombs = []
+  determineBombs(maxBombs, maxBombX, maxBombY)
+}
 }
 
 document.addEventListener("click", mouseDown);
