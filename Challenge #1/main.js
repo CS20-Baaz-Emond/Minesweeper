@@ -2,8 +2,10 @@
 
 let cnv = document.getElementById("game");
 let ctx = cnv.getContext("2d");
+let flag = 
 cnv.width = 800;
 cnv.height = 800;
+let img = document.getElementById("flag")
 
 let bombX, bombY, bombX1, bombY1, easy, medium, hard;
 
@@ -19,6 +21,11 @@ function easyClicked() {
   easy = true
   medium = false
   hard = false
+
+  let bombNumber = 10
+  document.getElementById("mines").innerHTML = `
+  : ${bombNumber}
+  `
 
   determineBombs(10, 7, 9)
 
@@ -45,7 +52,7 @@ function easyClicked() {
 
   for (let y = 0; y < 8; y++) {
     for (let x = 0; x < 10; x++) {
-    drawStuff(y, x, 10, 8)
+    drawDesign(y, x, 10, 8)
     }
   }
 }
@@ -59,6 +66,11 @@ function mediumClicked() {
   easy = false
   medium = true
   hard = false
+
+  let bombNumber = 40
+  document.getElementById("mines").innerHTML = `
+  : ${bombNumber}
+  `
 
   determineBombs(40, 13, 17)
 
@@ -85,7 +97,7 @@ function mediumClicked() {
 
   for (let y = 0; y < 14; y++) {
     for (let x = 0; x < 18; x++) {
-      drawStuff(y, x, 18, 14)
+      drawDesign(y, x, 18, 14)
     }
   }
 }
@@ -99,6 +111,11 @@ function hardClicked() {
   easy = false
   medium = false
   hard = true
+
+  let bombNumber = 99
+  document.getElementById("mines").innerHTML = `
+  : ${bombNumber}
+  `
 
   determineBombs(99, 19,23)
 
@@ -125,7 +142,7 @@ function hardClicked() {
 
 for (let y = 0; y < 20; y++) {
   for (let x = 0; x < 24; x++) {
-    drawStuff(y, x, 24, 20)
+    drawDesign(y, x, 24, 20)
   }
 }
 }
@@ -161,6 +178,20 @@ function drawStuff(y, x, maxWidth, maxHeight) {
   ctx.strokeRect(((800 / maxWidth) * x), ((800 / maxHeight) * y), (800 / maxWidth), (800 / maxHeight))
 }
 
+function drawFlag(c, y, maxWidth, maxHeight) {
+  ctx.drawImage(img, ((800 / maxWidth) * y), ((800 / maxHeight) * c))
+}
+
+function drawDesign(y, x, maxWidth, maxHeight) {
+    if ((y + x) % 2 == 1) {
+      ctx.fillStyle = "#90D485"
+      ctx.fillRect(((800 / maxWidth) * x), ((800 / maxHeight) * y), (800 / maxWidth), (800 / maxHeight))
+    } else if ((y + x) % 2 == 0) {
+      ctx.fillStyle = "#66AC64"
+      ctx.fillRect(((800 / maxWidth) * x), ((800 / maxHeight) * y), (800 / maxWidth), (800 / maxHeight))
+    }
+}
+
 function blockValue(c, y, maxWidth, maxHeight) {
   if (c > 0 && y > 0 && blocks[c - 1][y - 1] > -1) {
     blocks[c - 1][y - 1] += 1
@@ -188,12 +219,12 @@ function blockValue(c, y, maxWidth, maxHeight) {
   }
 }
 
-function determineBombs(maxBombs, maxBombX, maxBombY) {
+function determineBombs(maxBombs, maxWidth, maxHeight) {
   let reload = false
-  console.log(maxBombs, maxBombX, maxBombY)
+  console.log(maxBombs, maxWidth, maxHeight)
   for (let x = 0; x < maxBombs; x++) {
-    bombX = Math.round(Math.random() * maxBombX)
-    bombY = Math.round(Math.random() * maxBombY)
+    bombX = Math.round(Math.random() * maxWidth)
+    bombY = Math.round(Math.random() * maxHeight)
     bombs.splice(x, 0, [bombX, bombY])
     for (let b = 0; b < bombs.length; b++) {
       if (bombs[x][0] == bombs[b][0] && bombs[x][1] == bombs[b][1] && (easy || medium)) {
@@ -203,8 +234,8 @@ function determineBombs(maxBombs, maxBombX, maxBombY) {
       } else if (bombs[x][0] == bombs[b][0] && bombs[x][1] == bombs[b][1] && (hard)) {
         if (x !== b) {
           bombs[x] = []
-          bombX = Math.round(Math.random * maxBombX)
-          bombY = Math.round(Math.random * maxBombY)
+          bombX = Math.round(Math.random * maxWidth)
+          bombY = Math.round(Math.random * maxHeight)
           bombs[x] = [bombX, bombY]
           if (bombs[x][0] == bombs[b][0] && bombs[x][1] == bombs[b][1] && (hard)) {
             reload = true
@@ -215,7 +246,7 @@ function determineBombs(maxBombs, maxBombX, maxBombY) {
 }
 if (reload) {
   bombs = []
-  determineBombs(maxBombs, maxBombX, maxBombY)
+  determineBombs(maxBombs, maxWidth, maxHeight)
 }
 }
 
@@ -248,6 +279,37 @@ maxX = 24
 
 function mouseInSquare(c, y, maxWidth, maxHeight, mouseX, mouseY) {
   if (mouseX > ((800 / maxWidth) * y) && mouseY > ((800 / maxHeight) * c) && mouseX < ((800 / maxWidth) * y) + (800 / maxWidth) && mouseY < ((800 / maxHeight) * c) + (800 / maxHeight)) {
-    console.log(y, c, blocks[c][y])
+    drawStuff(c, y, maxWidth, maxHeight)
+  }
+}
+
+document.addEventListener('contextmenu', (e, maxX, maxY) => {
+  e.preventDefault();
+  let cnvRect = cnv.getBoundingClientRect();
+
+if (easy) {
+maxY = 8
+maxX = 10
+} else if (medium) {
+maxY = 14
+maxX = 18
+} else if (hard) {
+maxY = 20
+maxX = 24
+}
+
+  mouseX = Math.round(e.clientX - cnvRect.left);
+  mouseY = Math.round(e.clientY - cnvRect.top);
+
+  for (let c = 0; c < maxY; c++) {
+    for (let y = 0; y < maxX; y++) {
+      rightMouseInSquare(c, y, maxX, maxY, mouseX, mouseY)
+      }
+    }
+});
+
+function rightMouseInSquare(c, y, maxWidth, maxHeight, mouseX, mouseY) {
+  if (mouseX > ((800 / maxWidth) * y) && mouseY > ((800 / maxHeight) * c) && mouseX < ((800 / maxWidth) * y) + (800 / maxWidth) && mouseY < ((800 / maxHeight) * c) + (800 / maxHeight)) {
+    drawFlag(c, y, maxWidth, maxHeight)
   }
 }
