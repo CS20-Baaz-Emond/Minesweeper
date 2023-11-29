@@ -10,7 +10,7 @@ body {
 
 
 html {
-  background-color: rgba(0, 0, 0, 0.187);
+  background-color: #5B8D5A;
 }
 
 #hr1{
@@ -44,4 +44,16 @@ hr{
 
 button:hover{
   cursor: pointer;
+}
+
+#top-bar{
+  display: flex;
+  justify-content: center;
+  gap: 350px;
+}
+
+#bombs{
+  display: flex;
+  justify-content: center;
+  gap: 5px;
 }
